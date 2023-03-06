@@ -5,9 +5,10 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-// Base class for all Unit. It will handle movement order given through the UserControl script.
-// It require a NavMeshAgent to navigate the scene.
+// Базовий клас для всіх одиниць. Він буде обробляти порядок руху, наданий через скрипт UserControl.
+// Для навігації по сцені потрібен NavMeshAgent.
 [RequireComponent(typeof(NavMeshAgent))]
+
 public abstract class Unit : MonoBehaviour,
     UIMainScene.IUIInfoContent
 {
@@ -26,7 +27,10 @@ public abstract class Unit : MonoBehaviour,
 
     private void Start()
     {
-
+        if(MainManager.Instance != null)    // перевіряємо чи є меін менеджер і встановлюємо колір що був раніше збережений в настройках меню
+        {
+            SetColor(MainManager.Instance.TeamColor);
+        }
     }
 
     void SetColor(Color c)

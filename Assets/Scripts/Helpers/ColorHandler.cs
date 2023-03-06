@@ -1,8 +1,8 @@
 using UnityEngine;
 
 
-// Handles setting a color to a given renderer and material slot. Used to simplify coloring our Unit.
-// (This can be added on the visual prefab and the Unit code can just query oif that component exists to set color)
+//Ручки, що встановлюють колір для заданого рендерера і слота матеріалу. Використовується для спрощення фарбування нашого агрегату.
+//(Це можна додати на візуальному збірній, і код одиниці може просто запитати oif цей компонент існує для встановлення кольору)
 public class ColorHandler : MonoBehaviour
 {
     public Renderer TintRenderer;
