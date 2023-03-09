@@ -22,11 +22,29 @@ public class UserControl : MonoBehaviour
 
     private void Update()
     {
-        Vector2 move = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        GameCamera.transform.position = GameCamera.transform.position + new Vector3(move.y, 0, -move.x) * PanSpeed * Time.deltaTime;
+        CameraMove();
 
         if (Input.GetMouseButtonDown(0))
         {
+            HandleSelection();
+        }
+        else if (m_Selected != null && Input.GetMouseButtonDown(1))
+        {
+            HandleAction();
+        }
+
+            MarkerHandling();
+    }
+    // рух камери
+    public void CameraMove()
+    {
+        Vector2 move = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        GameCamera.transform.position = GameCamera.transform.position + new Vector3(move.y, 0, -move.x) * PanSpeed * Time.deltaTime;
+    }
+
+    // обробка подій, якщо клацнули лівою кнопкою миші
+    public void HandleSelection()
+    {
             var ray = GameCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
@@ -34,37 +52,37 @@ public class UserControl : MonoBehaviour
                 //the collider could be children of the unit, so we make sure to check in the parent
                 var unit = hit.collider.GetComponentInParent<Unit>();
                 m_Selected = unit;
-                
-                
+
+
                 //check if the hit object have a IUIInfoContent to display in the UI
                 //if there is none, this will be null, so this will hid the panel if it was displayed
                 var uiInfo = hit.collider.GetComponentInParent<UIMainScene.IUIInfoContent>();
                 UIMainScene.Instance.SetNewInfoContent(uiInfo);
             }
-        }
-        else if (m_Selected != null && Input.GetMouseButtonDown(1))
-        {//right click give order to the unit
-            var ray = GameCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+    }
+
+    //  обробка подфй, якщо правою кнопкою миші клацнули
+    public void HandleAction()
+    {
+        //right click give order to the unit
+        var ray = GameCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            var building = hit.collider.GetComponentInParent<Building>();
+
+            if (building != null)
             {
-                var building = hit.collider.GetComponentInParent<Building>();
-                
-                if (building != null)
-                {
-                    m_Selected.GoTo(building);
-                }
-                else
-                {
-                    m_Selected.GoTo(hit.point);
-                }
+                 m_Selected.GoTo(building);
+            }
+            else
+            {
+                m_Selected.GoTo(hit.point);
             }
         }
-
-        MarkerHandling();
     }
-    
-    // Handle displaying the marker above the unit that is currently selected (or hiding it if no unit is selected)
+
+    // Маркер, що відображає маркер над вибраним блоком (або приховує його, якщо не вибрано жодного блоку)
     void MarkerHandling()
     {
         if (m_Selected == null && Marker.activeInHierarchy)

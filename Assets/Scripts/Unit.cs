@@ -55,7 +55,7 @@ public abstract class Unit : MonoBehaviour,
         }
     }
 
-    public virtual void GoTo(Building target)
+    public virtual void GoTo(Building target)  // якщо клацнули на ресурси
     {
         m_Target = target;
 
@@ -66,7 +66,7 @@ public abstract class Unit : MonoBehaviour,
         }
     }
 
-    public virtual void GoTo(Vector3 position)
+    public virtual void GoTo(Vector3 position)  // якщо клацнули на випадкове місце
     {
         //we don't have a target anymore if we order to go to a random point.
         m_Target = null;
