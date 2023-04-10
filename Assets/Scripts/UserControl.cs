@@ -49,13 +49,13 @@ public class UserControl : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                //the collider could be children of the unit, so we make sure to check in the parent
+                //Колайдером можуть бути діти підрозділу, тому ми обов'язково перевіряємо батька
                 var unit = hit.collider.GetComponentInParent<Unit>();
                 m_Selected = unit;
 
 
-                //check if the hit object have a IUIInfoContent to display in the UI
-                //if there is none, this will be null, so this will hid the panel if it was displayed
+                //перевірте, чи має об'єкт хіта IUIInfoContent для відображення в інтерфейсі користувача
+                //якщо такого немає, це буде null, тому це приховає панель, якщо вона відображалася
                 var uiInfo = hit.collider.GetComponentInParent<UIMainScene.IUIInfoContent>();
                 UIMainScene.Instance.SetNewInfoContent(uiInfo);
             }
